@@ -160,6 +160,12 @@ func getSlackIssuesPayload(p *api.IssuePayload, slack *SlackMeta) (*SlackPayload
 		text = fmt.Sprintf("[%s] Issue labels cleared: %s by %s", p.Repository.FullName, titleLink, senderLink)
 	case api.HookIssueSynchronized:
 		text = fmt.Sprintf("[%s] Issue synchronized: %s by %s", p.Repository.FullName, titleLink, senderLink)
+	case api.HookIssueMilestoned:
+		text = fmt.Sprintf("[%s] Issue milestone set to %s: %s by %s", p.Repository.FullName,
+		   	SlackLinkFormatter(p.Repository.HTMLURL+/milestone/+p.Issue.Milestone.ID, p.Issue.Milestone.Title),
+			titleLink, senderLink)
+	case api.HookIssueDemilestoned:
+		text = fmt.Sprintf("[%s] Issue milestone cleared: %s by %s", p.Repository.FullName, titleLink, senderLink)
 	}
 
 	return &SlackPayload{
